@@ -3,7 +3,7 @@
 
 #define maxsize 100
 
-void printboard(int n , int m, int board[maxsize][maxsize]){
+void printBoard(int n , int m, int board[maxsize][maxsize]){
     for(int i = 0;i < n;i++){
         for(int j = 0;j < m;j++){
         if(board[i][j] == 1)
@@ -15,8 +15,8 @@ void printboard(int n , int m, int board[maxsize][maxsize]){
     }
 }
 
-bool validboard_hor(int n, int m, int col, int board[maxsize][maxsize],
-    int total_blacklist[maxsize][maxsize]){
+bool checkHorizontal(int n, int m, int col, int board[maxsize][maxsize],
+    int totalBlackList[maxsize][maxsize]){
     int row = (col == 0) ? n-1 : n;
     int b_sequence = 0;
     int testlist[maxsize];
@@ -28,8 +28,8 @@ bool validboard_hor(int n, int m, int col, int board[maxsize][maxsize],
             b_sequence++;
             black = true;
             testlist[v] = b_sequence;
-            if (total_blacklist[row][0] == 0 || 
-                b_sequence > total_blacklist[row][v+1])
+            if (totalBlackList[row][0] == 0 || 
+                b_sequence > totalBlackList[row][v+1])
                     return false;
         }
         else{
@@ -43,10 +43,10 @@ bool validboard_hor(int n, int m, int col, int board[maxsize][maxsize],
 
     if(col == 0){
         int len = (black == true) ? v+1 : v;
-        if(total_blacklist[row][0] != len)
+        if(totalBlackList[row][0] != len)
             return false;
         for(int l = 0;l < len;l++){
-            if(total_blacklist[row][l + 1] != testlist[l])
+            if(totalBlackList[row][l + 1] != testlist[l])
                 return false;
             }
     }
@@ -54,8 +54,8 @@ bool validboard_hor(int n, int m, int col, int board[maxsize][maxsize],
     return true;
 }
 
-bool validboard_ver(int n, int m, int total, int board[maxsize][maxsize],
-    int total_blacklist[maxsize][maxsize]){
+bool checkVertical(int n, int m, int total, int board[maxsize][maxsize],
+    int totalBlackList[maxsize][maxsize]){
     int col = (total % m - 1 < 0) ? m-1 : total % m - 1;
     int b_sequence = 0;  
     int testlist[maxsize];
@@ -67,8 +67,8 @@ bool validboard_ver(int n, int m, int total, int board[maxsize][maxsize],
             b_sequence++;
             black=true;
             testlist[v] = b_sequence;
-            if(total_blacklist[n+col][0] == 0 || 
-                b_sequence > total_blacklist[n + col][v + 1])
+            if(totalBlackList[n+col][0] == 0 || 
+                b_sequence > totalBlackList[n + col][v + 1])
                 return false;
         }
         else{
@@ -82,10 +82,10 @@ bool validboard_ver(int n, int m, int total, int board[maxsize][maxsize],
 
     if(total > n * m - m){
         int len = (black == true) ? v+1 : v;
-        if(total_blacklist[n + col][0] != len)
+        if(totalBlackList[n + col][0] != len)
             return false;
         for(int l = 0;l < len;l++){
-            if(total_blacklist[n + col][l + 1] != testlist[l])
+            if(totalBlackList[n + col][l + 1] != testlist[l])
             return false;
         }
     }
@@ -94,11 +94,11 @@ bool validboard_ver(int n, int m, int total, int board[maxsize][maxsize],
 }
 
 bool recur(int n, int m, int total, int board[maxsize][maxsize],
-    int total_blacklist[maxsize][maxsize]){   
+    int totalBlackList[maxsize][maxsize]){   
     if (total == n * m){
-        if(validboard_hor(n, m, total % m, board,total_blacklist)
-            &&(validboard_ver(n,m,total,board,total_blacklist))){
-                printboard(n,m,board);
+        if(checkHorizontal(n, m, total % m, board,totalBlackList)
+            &&(checkVertical(n,m,total,board,totalBlackList))){
+                printBoard(n, m, board);
                 return true;
         }
         else
@@ -108,16 +108,16 @@ bool recur(int n, int m, int total, int board[maxsize][maxsize],
         int row = total / m;
         int col = total % m;
         if(total > 0){
-            if(!validboard_hor(row, m, col, board,total_blacklist) || 
-            (!validboard_ver(n,m,total,board,total_blacklist)))
+            if(!checkHorizontal(row, m, col, board,totalBlackList) || 
+            (!checkVertical(n, m, total, board, totalBlackList)))
                 return false;
         }
         board[row][col] = 1;
-        bool succeed = recur(n, m, total + 1, board, total_blacklist);
+        bool succeed = recur(n, m, total + 1, board, totalBlackList);
         if(succeed)
             return true;
         board[row][col] = 2;
-        succeed = recur(n, m, total + 1, board, total_blacklist);
+        succeed = recur(n, m, total + 1, board, totalBlackList);
         if(succeed)
             return true;
         board[row][col] = 0;
@@ -130,18 +130,18 @@ int main(void){
     int n, m;
     scanf("%d%d", &n, &m);
     int board[maxsize][maxsize];
-    int total_blacklist[maxsize][maxsize];
+    int totalBlackList[maxsize][maxsize];
 
     for(int i = 0;i < (n + m);i++){
         int len;
         scanf("%d", &len);
-        total_blacklist[i][0] = len;
+        totalBlackList[i][0] = len;
         for(int j = 1;j <= len;j++){
             int count;
             scanf("%d", &count);
-            total_blacklist[i][j] = count;
+            totalBlackList[i][j] = count;
         }
     }
-    recur(n, m, 0, board, total_blacklist);
+    recur(n, m, 0, board, totalBlackList);
     return 0;
 }
