@@ -2,7 +2,7 @@
 
 Homework of [Data Structure and Algorithm 2022 at NTU](https://www.csie.ntu.edu.tw/~htlin/course/dsa22spring/) (Lectured by Michael Hsin-Mu Tsai / Hsuan-Tien Lin)
 
-> This course is about Data Structure and Algorithm for NTU CSIE freshman, including LinkedList, Stack, Queue, Heap, Hash Table, BST, RBtree, B-tree and so on...
+> This course is about Data Structure and Algorithm for NTU CSIE freshman, including but not only LinkedList, Stack, Queue, Heap, Hash Table, BST, RBtree, B-tree and so on...
 
 ## Homework 0 
 ### Task description ([PDF](https://github.com/RobertChienShiba/2022-Spring-DSA/tree/main/hw0/DSA2022_hw0.pdf))
